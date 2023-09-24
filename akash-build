@@ -1,0 +1,147 @@
+#!/bin/bash
+
+# Display usage instructions
+show_usage() {
+  echo "Usage: $0 [--path <folderpath>] <app-name>"
+  echo "Options:"
+  echo "  --path <folderpath>: Specify a custom path for building the container image (default is current directory)."
+  echo "  -h, --help: Display this help message."
+  exit 1
+}
+
+# Check if Docker is installed
+is_docker_installed() {
+  if [ "$(uname -s)" == "Linux" ] || [ "$(uname -s)" == "Darwin" ]; then
+    if [ -x "$(command -v docker)" ]; then
+      return 0  # Docker is installed
+    fi
+  fi
+  return 1  # Docker is not installed
+}
+
+# Install Docker if not already installed
+install_docker() {
+  if ! is_docker_installed; then
+    echo "Installing Docker..."
+    if [ "$(uname -s)" == "Linux" ]; then
+      # Install Docker on Linux
+      sudo apt-get update
+      sudo apt-get install -y docker.io
+      sudo systemctl start docker
+      sudo systemctl enable docker
+    elif [ "$(uname -s)" == "Darwin" ]; then
+      # Install Docker on macOS
+      echo "Please install Docker Desktop from https://docs.docker.com/desktop/install/"
+    else
+      echo "Unsupported operating system: $(uname -s)"
+      exit 1
+    fi
+  else
+    echo "Docker is already installed."
+  fi
+}
+
+# Check if Pack is installed
+is_pack_installed() {
+  if [ -x "$(command -v pack)" ]; then
+    return 0  # Pack is installed
+  fi
+  return 1  # Pack is not installed
+}
+
+# Install Pack if not already installed
+install_pack() {
+  if ! is_pack_installed; then
+    echo "Installing Pack..."
+    if [ "$(uname -s)" == "Linux" ]; then
+      # Install Pack on Linux
+      curl -sSL https://github.com/buildpacks/pack/releases/latest/download/pack-bionic | sudo tar -xz -C /usr/local/bin
+    elif [ "$(uname -s)" == "Darwin" ]; then
+      # Install Pack on macOS
+      brew install buildpacks/tap/pack
+    else
+      echo "Unsupported operating system: $(uname -s)"
+      exit 1
+    fi
+  else
+    echo "Pack is already installed."
+  fi
+}
+
+# Get Docker credentials from the user
+get_docker_credentials() {
+  echo "Enter your Docker Hub username:"
+  read -r docker_username
+
+  # Prompt for Docker password without showing it on the console
+  echo -n "Enter your Docker Hub password: "
+  read -rs docker_password
+  echo  # Add a newline after password input
+}
+
+# Log in to Docker Hub
+docker_login() {
+  echo "Logging in to Docker Hub..."
+  echo "$docker_password" | docker login -u "$docker_username" --password-stdin
+}
+
+# Log out of Docker Hub
+docker_logout() {
+  echo "Logging out of Docker Hub..."
+  docker logout
+}
+
+# Build and push a container image using Pack
+build_and_push_image() {
+  local app_name="$1"
+  local path="$2"
+  local image_name="$docker_username/$app_name"
+
+  cd "$path" || exit 1
+
+  # Run Pack to build a container image
+  pack build "$image_name"
+
+  # Log in to Docker Hub
+  docker_login
+
+  # Push the container image to Docker Hub
+  docker push "$image_name"
+
+  # Log out of Docker Hub
+  docker_logout
+
+  echo "Container image '$image_name' has been built and pushed to Docker Hub successfully!"
+}
+
+# Main function
+main() {
+  local app_name=""
+  local path="."
+
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --path)
+        shift
+        path="$1"
+        ;;
+      -h|--help)
+        show_usage
+        ;;
+      *)
+        app_name="$1"
+        ;;
+    esac
+    shift
+  done
+
+  # Get Docker credentials
+  get_docker_credentials
+
+  install_docker
+  install_pack
+  build_and_push_image "$app_name" "$path"
+}
+
+# Run the main function with the provided arguments
+main "$@"
