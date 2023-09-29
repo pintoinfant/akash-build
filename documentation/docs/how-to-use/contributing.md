@@ -1,7 +1,7 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 ---
 
 # Contributing
 
-If you would like to contribute to `akash-build` or report issues, please visit the [GitHub repository](https://github.com/your/repository) for this project.
+If you would like to contribute to `akash-build` or report issues, please visit the [GitHub repository](https://github.com/pintoinfant/akash-build) for this project.

@@ -2,44 +2,48 @@
 sidebar_position: 1
 ---
 
-# Installation
+# Installation Guide
 
-Before using `akash-build`, make sure you have the following prerequisites installed on your system:
+To get started with "akash-build," follow these simple steps to clone the repository and configure the tool:
 
-- [Docker](https://docs.docker.com/get-docker/): To build and push container images.
-- [Pack](https://buildpacks.io/docs/install-pack/): To create container images using buildpacks.
+1. **Clone the Repository**
 
-### Installing Docker
+First, clone the "akash-build" repository from GitHub by running the following command in your terminal:
 
-You can install Docker by following the instructions for your operating system:
+```shell
+git clone https://github.com/pintoinfant/akash-build
+```
 
-- **Linux**:
+2. **Navigate to the "akash-build" Directory**
 
-  ```bash
-  sudo apt-get update
-  sudo apt-get install -y docker.io
-  sudo systemctl start docker
-  sudo systemctl enable docker
-  ```
+Change your current working directory to the "akash-build" directory using the following command:
 
-- **macOS**:
+```shell
+cd akash-build
+```
 
-  Install [Docker Desktop](https://docs.docker.com/desktop/install/) for macOS.
+3. **Make the Configuration Script Executable**
 
-### Installing Pack
+Make the configuration script executable with the following command:
 
-You can install Pack by following the instructions for your operating system:
+```shell
+chmod +x config.sh
+```
 
-- **Linux**:
+4. **Run the Configuration Script**
 
-  ```bash
-  curl -sSL https://github.com/buildpacks/pack/releases/latest/download/pack-bionic | sudo tar -xz -C /usr/local/bin
-  ```
+Execute the configuration script to set up "akash-build":
 
-- **macOS**:
+```shell
+./config.sh
+```
 
-  ```bash
-  brew install buildpacks/tap/pack
-  ```
+That's it! You have successfully installed and configured "akash-build." You are now ready to build and push container images with ease.
 
-Once you have Docker and Pack installed, you are ready to use `akash-build`.
+Note: Ensure that you have the necessary dependencies installed, including Docker, Git, and any language-specific build tools required for your projects. "akash-build" may rely on these tools for image building.
+
+Enjoy using "akash-build" to streamline your Docker image creation process!
+
+## Next Steps
+
+Now that you have installed "akash-build," you can learn how to use it to build and push container images. Check out the [Features](/docs/how-to-use/features) section.
