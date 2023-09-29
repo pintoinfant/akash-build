@@ -9,9 +9,10 @@ sidebar_position: 1
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Options](#options)
-- [Examples](#examples)
-- [Contributing](#contributing)
-- [License](#license)
+- [Installation](how-to-use/installation)
+- [Usage](how-to-use/usage)
+- [Examples](how-to-use/examples)
+- [Deploy](how-to-use/deploy)
+- [Help](how-to-use/help)
+- [Contributing](how-to-use/contributing)
+- [License](how-to-use/license)
