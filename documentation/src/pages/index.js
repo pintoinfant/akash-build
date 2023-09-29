@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <Layout
       title={`Simplify Container Image Building and Publishing with Ease`}
-      description="Description will go into a meta tag in <head />"
+      description="Akash-build seamlessly integrates with Pack, a robust and versatile tool for building OCI-compliant container images. This compatibility ensures that your container images meet industry standards for compatibility and portability."
     >
       <HomepageHeader />
       <main>
